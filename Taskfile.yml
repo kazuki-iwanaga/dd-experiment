@@ -1,0 +1,28 @@
+version: '3'
+
+tasks:
+  up:
+    cmds:
+      - docker compose up -d {{.CLI_ARGS}}
+  down:
+    cmds:
+      - docker compose down {{.CLI_ARGS}}
+  ps:
+    cmds:
+      - docker compose ps {{.CLI_ARGS}}
+  logs:
+    cmds:
+      - docker compose logs {{.CLI_ARGS}}
+  logsf:
+    cmds:
+      - docker compose logs -f {{.CLI_ARGS}}
+  in:
+    cmds:
+      - docker compose exec {{.CLI_ARGS}} /bin/bash
+
+  main:
+    cmds:
+      - docker compose exec py python app/main.py
+  jaeger:
+    cmds:
+      - open http://localhost:16686

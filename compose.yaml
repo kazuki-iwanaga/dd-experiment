@@ -1,0 +1,23 @@
+services:
+  py:
+    container_name: py
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DATADOG_TRACE_AGENT_HOSTNAME: otelcol
+      DATADOG_TRACE_AGENT_PORT: 8126
+    volumes:
+      - .:/app
+    working_dir: /app
+    tty: true
+    command: sleep infinity
+  otelcol:
+    container_name: otelcol
+    image: otel/opentelemetry-collector-contrib:0.112.0
+    volumes:
+      - ./otelcol.yaml:/etc/otelcol-contrib/config.yaml
+  jaeger:
+    image: jaegertracing/all-in-one
+    ports:
+      - 16686:16686
