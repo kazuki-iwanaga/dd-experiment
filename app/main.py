@@ -1,12 +1,5 @@
-import logging
 import time
 from ddtrace import tracer
-
-ddtrace_logger = logging.getLogger("ddtrace")
-ddtrace_logger.setLevel(logging.CRITICAL)
-
-dogstatsd_logger = logging.getLogger("datadog.dogstatsd")
-dogstatsd_logger.setLevel(logging.CRITICAL)
 
 @tracer.wrap()
 def hello_goodbye():
