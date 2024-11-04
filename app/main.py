@@ -1,5 +1,14 @@
 import time
+import os
 from ddtrace import tracer
+from datadog import initialize, statsd
+
+options = {
+    'statsd_host': 'otelcol', #os.getenv('DOGSTATSD_HOST'),
+    'statsd_port': 8125 #os.getenv('DOGSTATSD_PORT')
+}
+
+initialize(**options)
 
 @tracer.wrap()
 def hello_goodbye():
@@ -8,15 +17,21 @@ def hello_goodbye():
 
 @tracer.wrap()
 def hello():
-    time.sleep(1)
+    time.sleep(0.1)
     goodbye()
     print("Hello World!")
 
 @tracer.wrap()
 def goodbye():
-    time.sleep(1)
+    time.sleep(0.1)
     print("Goodbye!")
 
-if __name__ == "__main__":
-    with tracer.trace("main"):
-        hello_goodbye()
+# with tracer.trace("main"):
+#     hello_goodbye()
+
+# while(1):
+statsd.increment('main.invoked', tags=["environment:dev"])
+statsd.increment('main.invoked', tags=["environment:dev"])
+statsd.gauge('main.duration', 1.0, tags=["environment:dev"])
+
+print("Invoked main")

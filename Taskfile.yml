@@ -7,6 +7,12 @@ tasks:
   down:
     cmds:
       - docker compose down {{.CLI_ARGS}}
+  restart:
+    cmds:
+      - docker compose restart {{.CLI_ARGS}}
+  build:
+    cmds:
+      - docker compose build {{.CLI_ARGS}}
   ps:
     cmds:
       - docker compose ps {{.CLI_ARGS}}
@@ -26,3 +32,6 @@ tasks:
   jaeger:
     cmds:
       - open http://localhost:16686
+  grafana:
+    cmds:
+      - open http://localhost:3000

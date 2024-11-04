@@ -7,17 +7,38 @@ services:
     environment:
       DATADOG_TRACE_AGENT_HOSTNAME: otelcol
       DATADOG_TRACE_AGENT_PORT: 8126
+      DOGSTATSD_HOST: otelcol
+      DOGSTATSD_PORT: 8126
     volumes:
       - .:/app
     working_dir: /app
     tty: true
     command: sleep infinity
+
   otelcol:
     container_name: otelcol
     image: otel/opentelemetry-collector-contrib:0.112.0
     volumes:
       - ./otelcol.yaml:/etc/otelcol-contrib/config.yaml
+
   jaeger:
     image: jaegertracing/all-in-one
     ports:
       - 16686:16686
+
+  lgtm:
+    container_name: lgtm
+    image: docker.io/grafana/otel-lgtm:0.7.6
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana:/data/grafana
+      - prometheus:/data/prometheus
+      - loki:/loki
+    environment:
+      GF_PATHS_DATA: /data/grafana
+
+volumes:
+  grafana:
+  prometheus:
+  loki:
