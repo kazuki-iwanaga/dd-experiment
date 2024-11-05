@@ -3,9 +3,8 @@ certifi==2021.10.8
 chardet==4.0.0
 configparser==4.0.2
 contextlib2==0.6.0.post1
-datadog==0.41.0
+datadog==0.44.0
 ddtrace==0.30.0
-decorator==4.4.2
 distlib==0.3.0
 filelock==3.0.12
 idna==2.10

@@ -4,12 +4,13 @@ from ddtrace import tracer
 from datadog import initialize, statsd
 
 options = {
-    'statsd_host': 'localhost', #os.getenv('DOGSTATSD_HOST'),
-    'statsd_port': 8125 #os.getenv('DOGSTATSD_PORT')
+    'statsd_host': os.getenv('DOGSTATSD_HOST'),
+    'statsd_port': os.getenv('DOGSTATSD_PORT')
 }
 
 initialize(**options)
 
+@statsd.timed('main.hello_goodbye')
 @tracer.wrap()
 def hello_goodbye():
     hello()
@@ -26,7 +27,6 @@ def goodbye():
     time.sleep(0.1)
     print("Goodbye!")
 
-# with tracer.trace("main"):
 hello_goodbye()
 
 # while(1):

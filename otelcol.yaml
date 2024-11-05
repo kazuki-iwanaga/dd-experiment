@@ -4,26 +4,19 @@ receivers:
   statsd:
     endpoint: 0.0.0.0:8125
     aggregation_interval: 5s
-processors:
-  batch:
+
 exporters:
   debug:
-    # verbosity: detailed
-  otlp/jaeger:
-    endpoint: http://jaeger:4317
-    tls:
-      insecure: true
   otlp/lgtm:
     endpoint: http://lgtm:4317
     tls:
       insecure: true
+
 service:
   pipelines:
     traces:
       receivers: [datadog]
-      processors: [batch]
-      exporters: [debug, otlp/jaeger, otlp/lgtm]
+      exporters: [debug, otlp/lgtm]
     metrics:
-      receivers: [datadog, statsd]
-      processors: [batch]
+      receivers: [statsd]
       exporters: [debug, otlp/lgtm]

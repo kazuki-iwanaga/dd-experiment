@@ -25,13 +25,13 @@ tasks:
   in:
     cmds:
       - docker compose exec {{.CLI_ARGS}} /bin/bash
+  clean:
+    cmds:
+      - docker compose down -v
 
   main:
     cmds:
       - docker compose exec py python app/main.py
-  jaeger:
-    cmds:
-      - open http://localhost:16686
   grafana:
     cmds:
       - open http://localhost:3000
