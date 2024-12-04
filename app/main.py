@@ -1,38 +1,30 @@
-import time
-import os
+import random
+from time import sleep
 from ddtrace import tracer
 from datadog import initialize, statsd
 
-options = {
-    'statsd_host': os.getenv('DOGSTATSD_HOST'),
-    'statsd_port': os.getenv('DOGSTATSD_PORT')
-}
+initialize()
 
-initialize(**options)
+cnt = 0
+while True:
+    # Count
+    statsd.increment('hoge.count', random.randint(0, 10))
 
-@statsd.timed('main.hello_goodbye')
-@tracer.wrap()
-def hello_goodbye():
-    hello()
-    goodbye()
+    # Gauge
+    statsd.gauge('hoge.gauge', random.randint(0, 100))
 
-@tracer.wrap()
-def hello():
-    time.sleep(0.1)
-    goodbye()
-    print("Hello World!")
+    # Set
+    statsd.set('hoge.set', random.randint(0, 100))
 
-@tracer.wrap()
-def goodbye():
-    time.sleep(0.1)
-    print("Goodbye!")
+    # Histogram
+    statsd.histogram('hoge.histogram', random.randint(0, 100))
 
-hello_goodbye()
+    # Timing
+    statsd.timing('hoge.timing', random.randint(0, 1000))
 
-# while(1):
-statsd.increment('main.invoked', tags=["environment:dev"])
-statsd.increment('main.invoked', tags=["environment:dev"])
-statsd.gauge('main.duration', 1.0, tags=["environment:dev"])
+    # Distribution
+    statsd.distribution('hoge.distribution', random.randint(0, 1000))
 
-print("Invoked main")
-# time.sleep(1)
+    print('cnt: {}'.format(cnt))
+    cnt += 1
+    sleep(1)    

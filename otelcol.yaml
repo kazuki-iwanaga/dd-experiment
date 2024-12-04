@@ -3,10 +3,26 @@ receivers:
     endpoint: 0.0.0.0:8126
   statsd:
     endpoint: 0.0.0.0:8125
-    aggregation_interval: 5s
+    aggregation_interval: 10s
+    enable_metric_type: true
+    timer_histogram_mapping:
+      - statsd_type: histogram
+        observer_type: gauge
+      - statsd_type: timing
+        observer_type: histogram
+        histogram: 
+          max_size: 100
+      - statsd_type: distribution
+        observer_type: summary
+        summary: 
+          percentiles: [0, 10, 50, 90, 95, 100]
+
+processors:
+  deltatocumulative:
 
 exporters:
   debug:
+    verbosity: detailed
   otlp/lgtm:
     endpoint: http://lgtm:4317
     tls:
@@ -19,4 +35,5 @@ service:
       exporters: [debug, otlp/lgtm]
     metrics:
       receivers: [statsd]
+      processors: [deltatocumulative]
       exporters: [debug, otlp/lgtm]

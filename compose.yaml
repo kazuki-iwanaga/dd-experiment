@@ -7,8 +7,8 @@ services:
     environment:
       DATADOG_TRACE_AGENT_HOSTNAME: otelcol
       DATADOG_TRACE_AGENT_PORT: 8126
-      DOGSTATSD_HOST: otelcol
-      DOGSTATSD_PORT: 8125
+      DD_AGENT_HOST: otelcol
+      DD_DOGSTATSD_PORT: 8125
     volumes:
       - .:/app
     working_dir: /app
@@ -32,6 +32,8 @@ services:
       - loki:/loki
     environment:
       GF_PATHS_DATA: /data/grafana
+      ENABLE_LOGS_OTELCOL: true
+      ENABLE_LOGS_PROMETHEUS: true
 
 volumes:
   grafana:
