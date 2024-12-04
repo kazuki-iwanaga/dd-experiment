@@ -7,6 +7,12 @@ tasks:
   down:
     cmds:
       - docker compose down {{.CLI_ARGS}}
+  restart:
+    cmds:
+      - docker compose restart {{.CLI_ARGS}}
+  build:
+    cmds:
+      - docker compose build {{.CLI_ARGS}}
   ps:
     cmds:
       - docker compose ps {{.CLI_ARGS}}
@@ -19,10 +25,13 @@ tasks:
   in:
     cmds:
       - docker compose exec {{.CLI_ARGS}} /bin/bash
+  clean:
+    cmds:
+      - docker compose down -v
 
   main:
     cmds:
       - docker compose exec py python app/main.py
-  jaeger:
+  grafana:
     cmds:
-      - open http://localhost:16686
+      - open http://localhost:3000
