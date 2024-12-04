@@ -7,6 +7,10 @@ services:
     environment:
       DATADOG_TRACE_AGENT_HOSTNAME: otelcol
       DATADOG_TRACE_AGENT_PORT: 8126
+      DATADOG_SERVICE_NAME: py
+      DATADOG_ENV: local
+      DATADOG_PATCH_MODULES: "requests:true"
+
       DD_AGENT_HOST: otelcol
       DD_DOGSTATSD_PORT: 8125
     volumes:
